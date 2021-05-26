@@ -41,9 +41,9 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
             template: './src/index.html',
-            // wskazuje plik źródłowy
+            // wskazuję plik źródłowy
             filename: 'index.html'
-            // określan nazwę dla pliku
+            // określam nazwę dla pliku
         })
     ]
 }
