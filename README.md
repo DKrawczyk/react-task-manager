@@ -7,20 +7,22 @@
 
 # TasksManager
 
-## Wprowadzanie
+## Wprowadzenie
 
-Tym razem naszym zadaniem będzie napisanie jednego komponentu, który będzie zarządzał naszymi zadaniami.
+Tym razem stworzymy jeden komponent, który będzie zarządzał naszymi zadaniami.
 
-Dokładniej mówąc mamy napisać rozwiązanie, które pozwoli tworzyć zadania i liczyć czas ich wykonania tj. odliczać go.
+Będzie to rozwiązanie, które pozwoli tworzyć zadania i liczyć czas ich wykonania.
 
-## Detale
+## Implementacja
 
-Początkowo musimy zdefiniować formularz, przez który możemy dodawać nowe zdania. Ma to być komponent kontrolowany tj. do pól formularza przypisujemy wartości ze state (`<input name="task" value={ this.state.task } onChange={ ... } />`) i obsługę zdarzenia `onChange`.
+### Dodawanie zadań
 
-Każde wysłanie nazwy zadania ma skutkować dodaniem kolejnego elementu (obiektu) do `state` o nazwie `tasks`. Te dane mają być wysyłane do lokalnego API stworzonego przy pomocy [json-server](https://github.com/typicode/json-server). 
+Należy stworzyć formularz, który pozwoli na dodawanie nowych zadań. Ma to być komponent kontrolowany – do pól formularza muszą być przypisane wartości ze state (`<input name="task" value={ this.state.task } onChange={ ... } />`) i obsługa zdarzenia `onChange`.
 
-W momencie odpowiedzi od API otrzymujemy ID nowo dodanego elementu i dopiero wtedy to zadania dodajemy do naszej listy zadań (`this.state.tasks`). Pamiętaj, aby za każdym razem kiedy dodajesz nowy element tworzyć kopię poprzedniej tablicy tj.
-```
+Potwierdzenie formularza (`onSubmit`) ma skutkować wysłaniem zadania do lokalnego API stworzonego przy pomocy [json-servera](https://github.com/typicode/json-server). Po dodaniu zadania otrzymujemy odpowiedź od serwera – jest to ID nowo utworzonego elementu.
+
+Dopiero teraz możemy dodać to zadanie do naszej listy (`this.state.tasks`). Pamiętaj, aby za każdym razem, kiedy dodajesz nowy element, tworzyć kopię poprzedniej tablicy:
+```js
 const newItem = {
     name: 'Zadanie 1',
     // ... 
@@ -32,21 +34,40 @@ this.setState(state => {
     }
 });
 ```
+### Dane pojedynczego zadania
 
-Każde z zadań powinno posiadać informacje o nazwie `name`, o czasie jego wykonywania do tej pory w sekundach  (`time`), czy czas jest odliczany w danym momencie (`isRunning`), czy zostało już wykonane (`isDone`) i czy zostało usunięte (`isRemoved`). Pamiętajmy również o ID (`id`), które jest zwracane przez API.
+Każde z zadań powinno posiadać:
+- nazwę (`name`)
+- ID (`id`), które jest zwracane przez API
+- czas jego wykonywania w sekundach (`time`)
+- informację, czy czas jest odliczany w danym momencie (`isRunning`)
+- czy zadanie zostało już wykonane (`isDone`)
+- czy zostało usunięte (`isRemoved`).
 
-W każdym zadaniu powinniśmy mieć możliwość wystartowania odliczania, zatrzymania odliczanie jeśli zostało wcześniej wystartowane. Zakończyć zadanie co spowoduje przeniesienie go na koniec listy (można wykorzystać [.sort()](https://developer.mozilla.org/pl/docs/Web/JavaScript/Referencje/Obiekty/Array/sort)) oraz usunać co spowoduje, że nie będzie ono renderowane, ale cały czas przechowywane w state (można wykorzystać [.filter()](https://developer.mozilla.org/pl/docs/Web/JavaScript/Referencje/Obiekty/Array/filter)).
+### Funkcjonalności
 
-Uznajemy, że w jednym momencie możemy wykonywać jedno zadanie. Pamiętaj, że wciśnięcie przycisku `zakończone`, powinno jednocześnie zatrzymać odliczanie czasu. Usunięcie zadania powinno być możliwe dopiero po jego zakończeniu (uznajemy, że nie ma omyłkowo dodanych zadań).
+W każdym zadaniu powinniśmy mieć możliwość:
+- rozpoczęcia odliczania
+- zatrzymania odliczania, jeśli zostało wcześniej rozpoczęte
+- zakończenia zadania, co spowoduje przeniesienie go na koniec listy (można wykorzystać [.sort()](https://developer.mozilla.org/pl/docs/Web/JavaScript/Referencje/Obiekty/Array/sort))
+- usunięcia z listy, co spowoduje, że zadanie nie zostanie wyrenderowane, ale będzie cały czas przechowywane w state (można wykorzystać [.filter()](https://developer.mozilla.org/pl/docs/Web/JavaScript/Referencje/Obiekty/Array/filter)).
 
-Każda zmiana danych dla zadania tj. zmiana czasu, odliczanie/wtrzymanie itp. powinno być zapisywane w API. Pamietaj również, że zmiana w `state` powinna nieść za sobą utworzenie kopii obiektu i dopiero potem jego aktualizację np.
+Uznajemy, że w jednym momencie możemy wykonywać jedno zadanie.
 
-```
+Wciśnięcie przycisku `zakończone` powinno jednocześnie zatrzymywać naliczanie czasu.
+
+Usunięcie zadania ma być możliwe dopiero po jego zakończeniu (uznajemy, że nie ma omyłkowo dodanych zadań).
+
+Każda zmiana danych zadania (odliczanie, wstrzymanie, zakończenie itp.) powinna być zapisywana w API.
+
+Pamiętaj również, że zmiana w `state` musi odbywać się przez utworzenie kopii obiektu i dopiero potem jego aktualizację, np.
+
+```js
 incrementTime(id) {
     this.setState(state => {
         const newTasks = state.tasks.map(task => {
             if(task.id === id) {
-                return {...task, time: taks.time + 1}
+                return {...task, time: task.time + 1}
             }
 
             return task;
@@ -59,10 +80,10 @@ incrementTime(id) {
 }
 ```
 
-Każde zadanie powinno mieć strukturę zblizoną do tej poniżej. Pamietaj, że niektóre przyciski powinny się zachowywać zgodnie z obecnym stanem aplikacji.
-```
+Każde zadanie powinno mieć strukturę zbliżoną do tej poniżej. Pamiętaj, że część przycisków musi się zachowywać zgodnie z obecnym stanem aplikacji (np. w pewnym momencie być nieaktywna).
+```html
 <section>
-    <haader>Zadanie 1, 00:00:00</header>
+    <header>Zadanie 1, 00:00:00</header>
     <footer>
         <button>start/stop</button>
         <button>zakończone</button>
@@ -71,43 +92,43 @@ Każde zadanie powinno mieć strukturę zblizoną do tej poniżej. Pamietaj, że
 </section>
 ```
 
-Powyższa struktura powinna być generowana na podstawie danych z wartości `this.state.tasks` oraz przy pomocy [.map()](https://developer.mozilla.org/pl/docs/Web/JavaScript/Referencje/Obiekty/Array/map)
+Powyższa struktura powinna być generowana na podstawie danych z wartości `this.state.tasks` oraz przy pomocy [.map()](https://developer.mozilla.org/pl/docs/Web/JavaScript/Referencje/Obiekty/Array/map).
 
 ### Uwaga
 
-Na chwilę obecną nie dziel swojego komponentu na mniejsze części ponieważ niepotrzebnie będzie to komplikować implementację.
+Na razie nie dziel swojego komponentu na mniejsze części, ponieważ niepotrzebnie skomplikuje to implementację.
 
-W następnym materiale poznasz techniki, które pozwolą Ci podzielić ten komponent na mniejsze komponenty i odpowiednio przekazywać dane pomiędzy nimi. 
+W następnym materiale poznasz techniki, które Ci w takim podziale pomogą i pozwolą odpowiednio przekazywać dane pomiędzy komponentami. 
 
 ### CSS
 
-Do konfiguracji webpack-a tj. w pliku `webpack.config.js` dodano obługę plików CSS dlatego możesz odpowiednio stylować swoje rozwiązanie wykorzystując klasy i metodologię [BEM](http://getbem.com/).
+Do konfiguracji webpacka (w pliku `webpack.config.js`) dodano obsługę plików CSS, dlatego możesz odpowiednio ostylować swoje rozwiązanie, wykorzystując klasy i metodologię [BEM](http://getbem.com/).
 
-Zuważ, że w pliku `./src/app.js` jest importowany plik CSS. Dzięki temu rozwiązaniu webpack pobierze zawartość pliku i doda CSS jako znacznik `<style/>` w `<head/>` dla naszego `index.html`.
+Zauważ, że w `./src/app.js` importowany jest plik CSS. Dzięki temu rozwiązaniu webpack pobierze zawartość tego pliku i do `index.html` doda CSS jako znacznik `<style/>` w `<head/>`.
 
-#### Dodatkowe zasoby w CSS
+#### Dodatkowe zasoby w CSS-ie
 
-Aby webpack odpowiednio czytał zdjęcia lub font-y w CSS należy zmodyfikować konfigurację.
+Aby webpack odpowiednio czytał zdjęcia lub fonty w CSS-ie, należy zmodyfikować konfigurację.
 
-Możesz to uznać za zadanie dodatkowe lub poczekać na mówienie tego tematu przy następnej okazji.
+Możesz to uznać za zadanie dodatkowe lub poczekać na omówienie tego tematu w kolejnych materiałach.
 
-### JSON Server - przypomnienie
+### JSON Server – przypomnienie
 
-Paczka `json-server` powinna być zainstalowana globalnie dlatego warto mieć uprawnienia administratora (sudo na Linux-ie), aby móc to zrobić.
+Paczka `json-server` powinna być zainstalowana globalnie, dlatego warto mieć uprawnienia administratora (sudo na Linuksie), aby móc to zrobić.
 
-W terminalu wpisujemy komendę:
+W terminalu wpisz komendę:
 
 ```
 npm install -g json-server@0.15
 ```
 
-Po instalacji powinniśmy mieć dostęp do informacji o zainstalowanej wersji 
+Po instalacji powinieneś mieć dostęp do informacji o zainstalowanej wersji:
 
 ```
 json-server -v
 ```
 
-Teraz w katalogu głównym naszej aplikacji utworzymy sobie katalog `db`, a w nim stworzymy plik `data.json` i wrzucimy testowe dane tj.
+Teraz w katalogu głównym naszej aplikacji utwórz katalog `db`, a w nim plik `data.json` i wrzuć do niego testowe dane, np.:
 
 ```javascript
 {
@@ -121,13 +142,13 @@ Teraz w katalogu głównym naszej aplikacji utworzymy sobie katalog `db`, a w ni
 }
 ```
 
-Jeśli masz już uruchomienego webpacka (`npm start`), to w kolejnym terminalu (wierszu poleceń) powinismy odpalić nasze API tj.
+Jeśli masz już uruchomionego webpacka (`npm start`), to w kolejnym terminalu (wierszu poleceń) uruchom API:
 
 ```
 json-server --watch ./db/data.json --port 3005
 ```
 
-Ustawiamy inny port niż domyślny tj. 3000, aby być pewnym że nic go nie blokuje.
+Ustawiamy inny port niż domyślny (3000), aby być pewnym, że nic go nie blokuje.
 
 Od teraz możesz korzystać z API pod adresem:
 
@@ -135,7 +156,7 @@ Od teraz możesz korzystać z API pod adresem:
 http://localhost:3005/data
 ```
 
-> **Uwaga!** json-server musi zawsze być uruchomiony jeśli API ma działać. 
+> **Uwaga!** Jeśli API ma działać, json-server zawsze musi być uruchomiony. 
 
 
 
