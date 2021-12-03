@@ -119,7 +119,7 @@ Paczka `json-server` powinna być zainstalowana globalnie, dlatego warto mieć u
 W terminalu wpisz komendę:
 
 ```
-npm install -g json-server@0.15
+npm install -g json-server@0.17
 ```
 
 Po instalacji powinieneś mieć dostęp do informacji o zainstalowanej wersji:
