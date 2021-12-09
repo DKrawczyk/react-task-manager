@@ -1,3 +1,17 @@
 body {
     background: #dcdcdc;
 }
+
+.panel {
+    display: flex;
+    border: 1px solid;
+    height: 60vh;
+    margin: 0 auto;
+    justify-content: space-around;
+}
+
+.listPrototype {
+    margin: 0 auto;
+    height: 8vh;
+    border: 1px solid;
+}
