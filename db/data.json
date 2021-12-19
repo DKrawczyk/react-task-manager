@@ -3,10 +3,26 @@
     {
       "title": "Mycie naczyń",
       "time": 0,
-      "isRunning": false,
-      "isDone": false,
-      "isRemoved": false,
+      "isRunning": "false",
+      "isDone": "false",
+      "isRemoved": "false",
       "id": 1
+    },
+    {
+      "title": "Odrobienie zadań",
+      "time": 0,
+      "isRunning": "false",
+      "isDone": "false",
+      "isRemoved": "false",
+      "id": 2
+    },
+    {
+      "title": "Odkurzanie",
+      "time": 0,
+      "isRunning": "false",
+      "isDone": "false",
+      "isRemoved": "false",
+      "id": 3
     }
   ]
 }
