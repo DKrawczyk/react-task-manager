@@ -1,10 +1,12 @@
 import React from 'react';
+import TasksManagerAPI from '../TaskManagerAPI';
 
 class TasksManager extends React.Component {
 
     constructor() {
         super()
         this.apiURL = 'http://localhost:3005/data';
+        this.api = new TasksManagerAPI();
     }
 
     state = {
@@ -14,7 +16,7 @@ class TasksManager extends React.Component {
 
     onClick = () => {
         const { tasks } = this.state;
-        // console.log(tasks)
+        console.log(this.state)
     }
 
     render() {
@@ -35,12 +37,7 @@ class TasksManager extends React.Component {
                     </form>
                 </section>
                 <section className = "panel__section current">
-                    {/* <header className = "section__task">Task 1, <span className = "section__timer">00.00.00</span></header>
-                    <footer className = "section__buttons">
-                        <button className = "button section__button--start">start/stop</button>
-                        <button className = "button section__button--done">done</button>
-                        <button className = "button section__button--delete" disabled={true}>delete</button>
-                    </footer> */}
+                    {this.renderCurrentTask()}
                 </section>
             </div>
             <div className = "list">
@@ -54,7 +51,7 @@ class TasksManager extends React.Component {
     }
 
     componentDidMount() {
-        return this.fetch()
+        this.api.loadData()
             .then(data => this.uploadTasks(data))
             .catch(err => console.log(err.message))
             .finally(console.log('Data uploaded'))
@@ -77,53 +74,85 @@ class TasksManager extends React.Component {
         const newTask = {
             title: title,
             time: 0,
-            isRunning: 'false',
-            isDone: 'false',
-            isRemoved: 'false'
+            isRunning: false,
+            isDone: false,
+            isRemoved: false
         }
         return newTask;
     }
 
     uploadNewTask(task) {
-        console.log(task);
-        const options = {
-            method: 'POST',
-            body: JSON.stringify(task),
-            headers: {'Content-Type': 'application/json'}
-        }
-
-        return this.fetch(options) 
+        this.api.uploadNewTask(task) 
             .then(data => this.setState({
                 tasks: [...this.state.tasks, data]
-                }))
+            }))
             .catch(err => console.log(err.message))
+    }
+
+    renderCurrentTask() {
+        const taskArray = this.findCurrentTask();
+        const [currentTask] = taskArray;
+        // console.log(currentTask);
+        // console.log(currentTask);
+        if (taskArray.length >= 1) {
+            return (
+                <>
+                <header className = "section__task">{currentTask.title}, <span className = "section__timer">{currentTask.time} sec</span></header>
+                <footer className = "section__buttons">
+                    <button onClick = {() => this.stopTimer(currentTask.id)} className = "button section__button--stop">stop</button>
+                    {/* <button className = "button section__button--done" disabled={true}>done</button> */}
+                    {/* <button className = "button section__button--delete" disabled={true}>delete</button> */}
+                </footer>
+                </>
+            )
+        }
+        else {
+            return (
+                <h1>Nic tu nie ma</h1>
+            )
+        }
+    }
+
+    findCurrentTask() {
+        const {tasks} = this.state;
+        const singleArrayTask = tasks.filter(task => {
+            return task.isRunning === true;
+        })
+        return singleArrayTask;
     }
     
     renderTaskList() {
         const {tasks} = this.state;
         // console.log(this.state);
         // console.log(tasks);
-        return tasks.map(element => {
-            return (
-                <li>
-                    <header>{element.title}</header>
-                    <ul>
-                        <li>Spędzono łącznie: {element.time} sekund</li>
-                        <li>{this.taskStatus(element.isDone)}</li>
-                        <li>{element.isRunning}</li>
-                    </ul>
-                    <footer className = "item_footer">
-                            <button onClick = {e => this.startTask(element.id, e.target)} className = "button item__button--start">start/stop</button>
-                            <button onClick = {this.done} className = "button item__button--done">done</button>
+        return tasks.map(task => {
+            if(task.isRunning === false) {
+                return (
+                    <li>
+                        <header>{task.title}</header>
+                        <ul>
+                            <li>Spędzono łącznie: {task.time} sekund</li>
+                            <li>{this.taskStatus(task.isDone)}</li>
+                        </ul>
+                        <footer className = "item_footer">
+                            <button onClick = {() => this.startTimer(task.id)} className = "button item__button--start" disabled={this.timeDisabled(task)}>start</button>
+                            <button onClick = {(e) => this.endTask(task, e.target)} className = "button item__button--done" disabled={this.timeDisabled(task)}>done</button>
                             <button onClick = {this.delete} className = "button item__button--delete" disabled={true}>delete</button>
-                    </footer>
-                </li>
-            )
+                        </footer>
+                    </li>
+                )
+            }
         })
     }
 
+    timeDisabled(task) {
+        if(this.id && task.isRunning === false) {
+            return true;
+        }
+    }
+
     taskStatus(status) {
-        if(status === 'false') {
+        if(status === false) {
             return "Nie zakończone";
         }
         else {
@@ -137,87 +166,54 @@ class TasksManager extends React.Component {
         });
     }
 
-    startTask(id, current) {
+    startTimer(id) {
+        this.id = setInterval( () => {
+                this.handleCurrentTask(id, 1, true);
+            },1000
+        )}
+
+    stopTimer(id) {
+        clearInterval(this.id);
+        this.handleCurrentTask(id, 0, false);
+        this.id = null;
+    }
+
+    handleCurrentTask(id, incrementNumber, value) {
         const {tasks} = this.state;
-        const currentElement = current.parentElement.parentElement;
-        console.log(currentElement);
-        // currentElement.classList.add('hidden')
-        // this.timer();
 
         this.setState( () => {
             const newTasks = tasks.map(task => {
+
                 if(task.id === id) {
-                    const updateTask = {...task, time: task.time +1, isRunning: 'true'};
-                    this.updateTask(id, updateTask)
+                    const updateTask = {...task, time: task.time +incrementNumber, isRunning: value};
+                    this.updateTask(id, updateTask)     
                     return updateTask;
+                    
                 }
                 return task;
             });
+
             return {
                 tasks: newTasks,
             }
-        }, 
-            // () => {this.currentTask(currentElement)}
-        )
-
+        })
     }
-
-    // timer() {
-    //     let counter = 0;
-    //     const time = setInterval(
-    //         () => {
-    //             console.log(counter);
-    //         return ++counter;
-    //         },1000
-    //     )
-    //     return time;
-    // }
 
     updateTask(id, data) {
-        console.log(data);
-        const options = {
-            method: 'PUT',
-            body: JSON.stringify(data),
-            headers: {'Content-Type': 'application/json'}
-        }
-
-        this.sendUpdateRequest(id, options)
-    }
-
-    sendUpdateRequest(id, options) {
-        this.fetch(options, `/${id}`)
+        this.api.updateData(data, id)
             .catch(err => console.log(err.message))
     }
 
-    // currentTask(currentElement) {
-        // currentElement.classList.add('hidden')
-        // const el = currentElement.parentElement.parentElement.parentElement.children[1].lastChild;
-        // const place = document.querySelector('current');
-        // console.log(place);
-    //     const test = document.createElement('h1');
-    //     test.innerText = 'test';
-    //     el.appendChild(test);
-    //     console.log(this.state);
-    //     console.log(currentElement);
-    // }
-
-    done() {
-        console.log('done');
+    endTask(task, currTest) {
+        console.log(task);
+        currTest.previousElementSibling.disabled = true;
+        currTest.nextElementSibling.disabled = false;
+        // console.log(currTest);
+        // currTest.disabled = true;
     }
 
     delete() {
         console.log('delete');
-    }
-
-    fetch(options, additionalPath = '') {
-        const url = this.apiURL + additionalPath;
-        return fetch(url, options)
-            .then(resp => {
-                if(resp.ok) {
-                    return resp.json();
-                }
-            return Promise.reject(resp);
-        })
     }
 }
 

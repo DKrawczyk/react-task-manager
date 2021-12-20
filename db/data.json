@@ -2,27 +2,35 @@
   "data": [
     {
       "title": "Mycie naczyń",
-      "time": 0,
-      "isRunning": "false",
-      "isDone": "false",
-      "isRemoved": "false",
-      "id": 1
+      "isRunning": false,
+      "isDone": false,
+      "isRemoved": false,
+      "id": 1,
+      "time": 341
     },
     {
       "title": "Odrobienie zadań",
-      "time": 0,
-      "isRunning": "false",
-      "isDone": "false",
-      "isRemoved": "false",
+      "time": 60,
+      "isRunning": false,
+      "isDone": false,
+      "isRemoved": false,
       "id": 2
     },
     {
       "title": "Odkurzanie",
-      "time": 0,
-      "isRunning": "false",
-      "isDone": "false",
-      "isRemoved": "false",
+      "time": 35,
+      "isRunning": false,
+      "isDone": false,
+      "isRemoved": false,
       "id": 3
+    },
+    {
+      "title": "Podłogi",
+      "time": 0,
+      "isRunning": false,
+      "isDone": false,
+      "isRemoved": false,
+      "id": 4
     }
   ]
 }
