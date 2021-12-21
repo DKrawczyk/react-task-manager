@@ -19,11 +19,11 @@ class TasksManager extends React.Component {
             <>
             <h1 className = "title">TasksManager</h1>
             <div className = "panel">
-                <section className = "panel__section panel__section--title" onSubmit={this.insertNewTask}>
+                <section className = "panel__section panel__section--title" onSubmit={(e) => this.insertNewTask(e)}>
                     <form className = "panel__form">
                         <div className = "panel__form--field">
                             <label className = "panel__form--label">
-                                <input name='taskTitle' value={this.state.value} onChange={this.inputChange} placeholder='Insert your task'></input>
+                                <input name='taskTitle' value={this.state.value} onChange={this.inputChange} placeholder='Insert new task' autoComplete='off'></input>
                             </label>
                         </div>
                         <div className = "panel__form--field">
@@ -35,11 +35,14 @@ class TasksManager extends React.Component {
                     {this.renderCurrentTask()}
                 </section>
             </div>
-            <div className = "list">
-                <ul className = "list__tasks">
-                    <h2 className = "list__title">Lista zadań</h2>
-                    {this.renderTaskList()}
-                </ul>
+            
+            <div className = "tasks">
+                <section className="tasks__section">
+                <h2 className = "tasks__title">Lista zadań</h2>
+                    <ul className = "tasks__list"> 
+                        {this.renderTaskList()}
+                    </ul>
+                </section>
             </div>
             </>
         )
@@ -58,22 +61,25 @@ class TasksManager extends React.Component {
             tasks: data,
         });
     }
-
-    insertNewTask = () => {
-        const task = this.prepareNewTask();
-        this.uploadNewTask(task);
-    }
     
-    prepareNewTask() {
+    insertNewTask(event) {
         const {title} = this.state;
-        const newTask = {
-            title: title,
-            time: 0,
-            isRunning: false,
-            isDone: false,
-            isRemoved: false
+
+        if(title.length < 4) {
+            event.preventDefault();
+            alert('Task title cannot be shorter than four signs')
         }
-        return newTask;
+
+        else {
+            const newTask = {
+                title: title,
+                time: 0,
+                isRunning: false,
+                isDone: false,
+                isRemoved: false
+            }
+            this.uploadNewTask(newTask);
+        }
     }
 
     uploadNewTask(task) {
@@ -96,7 +102,7 @@ class TasksManager extends React.Component {
         if (taskArray.length >= 1) {
             return (
                 <>
-                <header className = "section__task">{currentTask.title}, <span className = "section__timer">{currentTask.time} sec</span></header>
+                <header className = "section__task">{currentTask.title}: <span className = "section__timer">Czas: {currentTask.time} sec</span></header>
                 <footer className = "section__buttons">
                     <button onClick = {() => this.stopTimer(currentTask.id)} className = "button section__button--stop">stop</button>
                 </footer>
@@ -105,7 +111,7 @@ class TasksManager extends React.Component {
         }
         else {
             return (
-                <h1>Nic tu nie ma</h1>
+                <h1>Please, start your task</h1>
             )
         }
     }
@@ -117,7 +123,9 @@ class TasksManager extends React.Component {
         })
         return singleArrayTask;
     }
-    
+// KOLEJNE PYTANKO :)
+// jak w tym fragmencie zrobić, żeby zadania (jeżeli dodasz kolejne) ładowały się z prawej strony? wiem, ze flex-wrap, ale przy direction column to nie działą, nie mam pomysłu
+// dodatkowo, dlaczego tak się dzieje, że po dodaniu kolejnego zadania nagle pojawia się jakiś inny kolor, jakby budowała się sama nowa struktura i jak temu zaradzić?
     renderTaskList() {
         const {tasks} = this.state;
         this.sortTasks(tasks);
@@ -126,16 +134,16 @@ class TasksManager extends React.Component {
         return finalArray.map(task => {
             if(task.isRunning === false) {
                 return (
-                    <li> 
-                        <header>{task.title}</header>
-                        <ul>
-                            <li>Spędzono łącznie: {task.time} sekund</li>
-                            <li>{this.taskStatus(task.isDone)}</li>
+                    <li className="singleTask"> 
+                        <h3 className="singleTask__title">{task.title}</h3>
+                        <ul className="singleTask__description">
+                            <li className="singleTask__info singleTask__timer">Spędzono łącznie: {task.time} sekund</li>
+                            <li className="singleTask__info singleTask__status">{this.taskStatus(task.isDone)}</li>
                         </ul>
-                        <footer className = "item_footer">
-                            <button onClick = {() => this.startTimer(task.id)} className = "button item__button--start" disabled={this.handleButtonUndoneTask(task)}>start</button>
-                            <button onClick = {() => this.endTask(task.id)} className = "button item__button--done" disabled={this.handleButtonUndoneTask(task)}>done</button>
-                            <button onClick = {() => this.delete(task.id)} className = "button item__button--delete" disabled={this.handleButtonDoneTask(task)}>delete</button>
+                        <footer className = "singleTask__footer">
+                            <button onClick = {() => this.startTimer(task.id)} className = "button singleTask__button--start" disabled={this.handleButtonUndoneTask(task)}>start</button>
+                            <button onClick = {() => this.endTask(task.id)} className = "button singleTask__button--done" disabled={this.handleButtonUndoneTask(task)}>done</button>
+                            <button onClick = {() => this.delete(task.id)} className = "button singleTask__button--delete" disabled={this.handleButtonDoneTask(task)}>delete</button>
                         </footer>
                     </li>
                 )
