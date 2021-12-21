@@ -14,21 +14,16 @@ class TasksManager extends React.Component {
         tasks: [],
     }
 
-    onClick = () => {
-        const { tasks } = this.state;
-        console.log(this.state)
-    }
-
     render() {
         return (
             <>
-            <h1 className = "title" onClick={this.onClick}>TasksManager</h1>
+            <h1 className = "title">TasksManager</h1>
             <div className = "panel">
-                <section className = "panel__section" onSubmit={this.insertNewTask}>
+                <section className = "panel__section panel__section--title" onSubmit={this.insertNewTask}>
                     <form className = "panel__form">
                         <div className = "panel__form--field">
-                            <label className = "panel__form--field-title">Task title
-                                <input name='taskTitle' value={this.state.value} onChange={this.inputChange}></input>
+                            <label className = "panel__form--label">
+                                <input name='taskTitle' value={this.state.value} onChange={this.inputChange} placeholder='Insert your task'></input>
                             </label>
                         </div>
                         <div className = "panel__form--field">
@@ -36,7 +31,7 @@ class TasksManager extends React.Component {
                         </div>
                     </form>
                 </section>
-                <section className = "panel__section current">
+                <section className = "panel__section panel__section--current">
                     {this.renderCurrentTask()}
                 </section>
             </div>
@@ -89,19 +84,21 @@ class TasksManager extends React.Component {
             .catch(err => console.log(err.message))
     }
 
+    inputChange = e => {
+        this.setState( {
+            title: e.target.value,
+        });
+    }
+
     renderCurrentTask() {
         const taskArray = this.findCurrentTask();
         const [currentTask] = taskArray;
-        // console.log(currentTask);
-        // console.log(currentTask);
         if (taskArray.length >= 1) {
             return (
                 <>
                 <header className = "section__task">{currentTask.title}, <span className = "section__timer">{currentTask.time} sec</span></header>
                 <footer className = "section__buttons">
                     <button onClick = {() => this.stopTimer(currentTask.id)} className = "button section__button--stop">stop</button>
-                    {/* <button className = "button section__button--done" disabled={true}>done</button> */}
-                    {/* <button className = "button section__button--delete" disabled={true}>delete</button> */}
                 </footer>
                 </>
             )
@@ -123,21 +120,22 @@ class TasksManager extends React.Component {
     
     renderTaskList() {
         const {tasks} = this.state;
-        // console.log(this.state);
-        // console.log(tasks);
-        return tasks.map(task => {
+        this.sortTasks(tasks);
+        const finalArray = this.removeDoneTask(tasks);
+        console.log(this.state);
+        return finalArray.map(task => {
             if(task.isRunning === false) {
                 return (
-                    <li>
+                    <li> 
                         <header>{task.title}</header>
                         <ul>
                             <li>Spędzono łącznie: {task.time} sekund</li>
                             <li>{this.taskStatus(task.isDone)}</li>
                         </ul>
                         <footer className = "item_footer">
-                            <button onClick = {() => this.startTimer(task.id)} className = "button item__button--start" disabled={this.timeDisabled(task)}>start</button>
-                            <button onClick = {(e) => this.endTask(task, e.target)} className = "button item__button--done" disabled={this.timeDisabled(task)}>done</button>
-                            <button onClick = {this.delete} className = "button item__button--delete" disabled={true}>delete</button>
+                            <button onClick = {() => this.startTimer(task.id)} className = "button item__button--start" disabled={this.handleButtonUndoneTask(task)}>start</button>
+                            <button onClick = {() => this.endTask(task.id)} className = "button item__button--done" disabled={this.handleButtonUndoneTask(task)}>done</button>
+                            <button onClick = {() => this.delete(task.id)} className = "button item__button--delete" disabled={this.handleButtonDoneTask(task)}>delete</button>
                         </footer>
                     </li>
                 )
@@ -145,10 +143,33 @@ class TasksManager extends React.Component {
         })
     }
 
-    timeDisabled(task) {
+    sortTasks(array) {
+        array.sort((a, b) => {
+            return a.isDone - b.isDone;
+        });
+        return array;
+    }
+
+    removeDoneTask(array) {
+        const newArray = array.filter((el) => {
+            if(el.isRemoved === false) {
+                return el;
+            }
+        })
+        return newArray;
+    }
+
+    handleButtonUndoneTask(task) {
         if(this.id && task.isRunning === false) {
             return true;
         }
+        else if(task.isDone === true ) {
+            return true;
+        }
+    }
+
+    handleButtonDoneTask(task) {
+        return (task.isDone === true) ? false : true;
     }
 
     taskStatus(status) {
@@ -158,12 +179,6 @@ class TasksManager extends React.Component {
         else {
             return "Zakończone";
         }
-    }
-
-    inputChange = e => {
-        this.setState( {
-            title: e.target.value,
-        });
     }
 
     startTimer(id) {
@@ -204,16 +219,39 @@ class TasksManager extends React.Component {
             .catch(err => console.log(err.message))
     }
 
-    endTask(task, currTest) {
-        console.log(task);
-        currTest.previousElementSibling.disabled = true;
-        currTest.nextElementSibling.disabled = false;
-        // console.log(currTest);
-        // currTest.disabled = true;
+    endTask(id) {
+        const {tasks} = this.state;
+        this.setState( () => {
+            const newTasks = tasks.map( task => {
+                if(task.id === id) {
+                    const updateTask = {...task, isDone: true};
+                    this.updateTask(id, updateTask);
+                    return updateTask;
+                }
+                return task;
+            });
+            return {
+                tasks: newTasks,
+            }
+        })
     }
 
-    delete() {
-        console.log('delete');
+    delete(id) {
+        const {tasks} = this.state;
+        this.setState( () => {
+            const newTasks = tasks.map( task => {
+                if(task.id === id) {
+                    const updateTask = {...task, isRemoved: true};
+                    this.updateTask(id, updateTask);
+                    return updateTask;
+                }
+                return task;
+            })
+            return {
+                tasks: newTasks,
+            }
+        })
+        console.log(id);
     }
 }
 

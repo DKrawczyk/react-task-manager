@@ -1,17 +1,16 @@
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
 body {
-    background: #dcdcdc;
+    background: #8DA6DE;
 }
 
 .title {
     text-align: center;
-}
-
-.hidden {
-    display: none;
-}
-
-.visible {
-    display: block;
+    font-size: 2.5rem;
+    font-style: italic;
 }
 
 .panel {
@@ -20,6 +19,40 @@ body {
     height: 40vh;
     margin: 0 auto;
     justify-content: space-around;
+    position: relative;
+}
+
+.panel__section {
+    /* border: 1px solid white; */
+    position: absolute;
+    height: 100%;
+}
+
+.panel__section--title {
+    width: 65%;
+    height: 100%;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.panel__form {
+    width: 70%;
+    position: absolute;
+    top: 40%;
+}
+
+.panel__form--label > input {
+    width: 100%;
+    height: 40px;
+}
+
+
+
+.panel__section--current {
+    width: 26%;
+    right: 8%;
 }
 
 .listPrototype {
