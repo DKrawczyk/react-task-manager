@@ -4,16 +4,16 @@
       "title": "Mycie naczyń",
       "isRunning": false,
       "isDone": true,
-      "isRemoved": false,
+      "isRemoved": true,
       "id": 1,
-      "time": 455
+      "time": 462
     },
     {
       "title": "Odrobienie zadań",
       "time": 503,
       "isRunning": false,
-      "isDone": false,
-      "isRemoved": false,
+      "isDone": true,
+      "isRemoved": true,
       "id": 2
     },
     {
@@ -31,6 +31,14 @@
       "isDone": false,
       "isRemoved": false,
       "id": 4
+    },
+    {
+      "title": "Zrobić projekt",
+      "time": 3,
+      "isRunning": false,
+      "isDone": true,
+      "isRemoved": false,
+      "id": 5
     }
   ]
 }

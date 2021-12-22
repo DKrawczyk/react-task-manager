@@ -38,9 +38,15 @@ class TasksManager extends React.Component {
             
             <div className = "tasks">
                 <section className="tasks__section">
-                <h2 className = "tasks__title">Lista zadań</h2>
+                    <h2 className = "tasks__title">Lista zadań</h2>
                     <ul className = "tasks__list"> 
                         {this.renderTaskList()}
+                    </ul>
+                </section>
+                <section className="tasks__section--done">
+                    <h2 className="tasks__title tasks__title--done">Zakończone</h2>
+                    <ul className="tasks__list--done">
+                    {this.renderDoneTasks()}
                     </ul>
                 </section>
             </div>
@@ -124,13 +130,13 @@ class TasksManager extends React.Component {
         return singleArrayTask;
     }
 // KOLEJNE PYTANKO :)
-// jak w tym fragmencie zrobić, żeby zadania (jeżeli dodasz kolejne) ładowały się z prawej strony? wiem, ze flex-wrap, ale przy direction column to nie działą, nie mam pomysłu
-// dodatkowo, dlaczego tak się dzieje, że po dodaniu kolejnego zadania nagle pojawia się jakiś inny kolor, jakby budowała się sama nowa struktura i jak temu zaradzić?
+// jak w tym fragmencie zrobić, żeby zadania (jeżeli dodasz kolejne) ładowały się z prawej strony? wiem, ze flex-wrap, ale przy direction column to nie działa, nie mam pomysłu
+// dodatkowo, dlaczego tak się dzieje, że po dodaniu kolejnego zadania nagle pojawia się jakiś inny kolor, gdy wychodzi poza domyślną wysokośc strony - jakby budowała się sama nowa struktura i jak temu zaradzić?
     renderTaskList() {
         const {tasks} = this.state;
         this.sortTasks(tasks);
+
         const finalArray = this.removeDoneTask(tasks);
-        console.log(this.state);
         return finalArray.map(task => {
             if(task.isRunning === false) {
                 return (
@@ -260,6 +266,25 @@ class TasksManager extends React.Component {
             }
         })
         console.log(id);
+    }
+
+    renderDoneTasks() {
+        const {tasks} = this.state;
+
+        const doneTasksArray = tasks.filter((task) => {
+            return task.isRemoved === true;
+        })
+
+        return doneTasksArray.map( task => {
+            if(doneTasksArray.length > 0) {
+                return (
+                    <li className="tasks__item--done">
+                        <header className="item__title--done">{task.title}</header>
+                        <footer className="item__footer--done">Total time: {task.time}</footer>
+                    </li>
+                )
+            }
+        })
     }
 }
 
