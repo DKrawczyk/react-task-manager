@@ -12,11 +12,13 @@ class TasksManager extends React.Component {
     state = {
         title: '',
         tasks: [],
+        loading: false,
     }
 
     render() {
         return (
             <>
+            {this.renderLoader()}
             <h1 className = "title">TasksManager</h1>
             <div className = "panel">
                 <section className = "panel__section panel__section--title" onSubmit={(e) => this.insertNewTask(e)}>
@@ -66,6 +68,30 @@ class TasksManager extends React.Component {
         this.setState({
             tasks: data,
         });
+    }
+
+    renderLoader() {
+        const {loading} = this.state;
+
+        if(loading === true) {
+            setTimeout(() => {
+                this.setState({
+                    loading: false,
+                })
+            },1000)
+
+            return (
+                <div className="background__loader">
+                    <div className="loader">
+                        <span class="loader__circle circle-1"></span>
+                        <span class="loader__circle circle-2"></span>
+                        <span class="loader__circle circle-3"></span>
+                        <span class="loader__circle circle-4"></span>
+                        <span class="loader__circle circle-5"></span>
+                    </div>
+                </div>
+            )
+        }
     }
     
     insertNewTask(event) {
@@ -129,9 +155,7 @@ class TasksManager extends React.Component {
         })
         return singleArrayTask;
     }
-// KOLEJNE PYTANKO :)
-// jak w tym fragmencie zrobić, żeby zadania (jeżeli dodasz kolejne) ładowały się z prawej strony? wiem, ze flex-wrap, ale przy direction column to nie działa, nie mam pomysłu
-// dodatkowo, dlaczego tak się dzieje, że po dodaniu kolejnego zadania nagle pojawia się jakiś inny kolor, gdy wychodzi poza domyślną wysokośc strony - jakby budowała się sama nowa struktura i jak temu zaradzić?
+
     renderTaskList() {
         const {tasks} = this.state;
         this.sortTasks(tasks);
@@ -147,7 +171,7 @@ class TasksManager extends React.Component {
                             <li className="singleTask__info singleTask__status">{this.taskStatus(task.isDone)}</li>
                         </ul>
                         <footer className = "singleTask__footer">
-                            <button onClick = {() => this.startTimer(task.id)} className = "button singleTask__button--start" disabled={this.handleButtonUndoneTask(task)}>start</button>
+                            <button onClick = {() => this.startTask(task.id)} className = "button singleTask__button--start" disabled={this.handleButtonUndoneTask(task)}>start</button>
                             <button onClick = {() => this.endTask(task.id)} className = "button singleTask__button--done" disabled={this.handleButtonUndoneTask(task)}>done</button>
                             <button onClick = {() => this.delete(task.id)} className = "button singleTask__button--delete" disabled={this.handleButtonDoneTask(task)}>delete</button>
                         </footer>
@@ -195,7 +219,12 @@ class TasksManager extends React.Component {
         }
     }
 
-    startTimer(id) {
+    startTask(id) {
+        const {loading} = this.state;
+        this.setState({
+            loading: true,
+        });
+        this.renderLoader();        
         this.id = setInterval( () => {
                 this.handleCurrentTask(id, 1, true);
             },1000
@@ -215,13 +244,12 @@ class TasksManager extends React.Component {
 
                 if(task.id === id) {
                     const updateTask = {...task, time: task.time +incrementNumber, isRunning: value};
-                    this.updateTask(id, updateTask)     
+                    this.updateTask(id, updateTask)
+
                     return updateTask;
-                    
                 }
                 return task;
             });
-
             return {
                 tasks: newTasks,
             }
@@ -240,6 +268,7 @@ class TasksManager extends React.Component {
                 if(task.id === id) {
                     const updateTask = {...task, isDone: true};
                     this.updateTask(id, updateTask);
+                    
                     return updateTask;
                 }
                 return task;
@@ -265,7 +294,6 @@ class TasksManager extends React.Component {
                 tasks: newTasks,
             }
         })
-        console.log(id);
     }
 
     renderDoneTasks() {
