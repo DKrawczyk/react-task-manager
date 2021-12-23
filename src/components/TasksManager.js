@@ -40,13 +40,13 @@ class TasksManager extends React.Component {
             
             <div className = "tasks">
                 <section className="tasks__section">
-                    <h2 className = "tasks__title">Lista zadań</h2>
+                    <h2 className = "tasks__title">Tasks list</h2>
                     <ul className = "tasks__list"> 
                         {this.renderTaskList()}
                     </ul>
                 </section>
                 <section className="tasks__section--done">
-                    <h2 className="tasks__title tasks__title--done">Zakończone</h2>
+                    <h2 className="tasks__title tasks__title--done">Done</h2>
                     <ul className="tasks__list--done">
                     {this.renderDoneTasks()}
                     </ul>
@@ -134,7 +134,7 @@ class TasksManager extends React.Component {
         if (taskArray.length >= 1) {
             return (
                 <>
-                <header className = "section__task">{currentTask.title}: <span className = "section__timer">Czas: {currentTask.time} sec</span></header>
+                <header className = "section__task">{currentTask.title}: <span className = "section__timer">Time: {currentTask.time} sec</span></header>
                 <footer className = "section__buttons">
                     <button onClick = {() => this.stopTimer(currentTask.id)} className = "button section__button--stop">stop</button>
                 </footer>
@@ -167,7 +167,7 @@ class TasksManager extends React.Component {
                     <li className="singleTask"> 
                         <h3 className="singleTask__title">{task.title}</h3>
                         <ul className="singleTask__description">
-                            <li className="singleTask__info singleTask__timer">Spędzono łącznie: {task.time} sekund</li>
+                            <li className="singleTask__info singleTask__timer">Total time: {task.time} seconds</li>
                             <li className="singleTask__info singleTask__status">{this.taskStatus(task.isDone)}</li>
                         </ul>
                         <footer className = "singleTask__footer">
@@ -212,10 +212,10 @@ class TasksManager extends React.Component {
 
     taskStatus(status) {
         if(status === false) {
-            return "Nie zakończone";
+            return "Not finished yet";
         }
         else {
-            return "Zakończone";
+            return "Finished";
         }
     }
 
