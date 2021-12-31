@@ -26,8 +26,8 @@ body {
     text-align: center;
     font-size: 3rem;
     padding-top: 2.3%;
-    color: white;
-    opacity: 0.5;
+    color: black;
+    font-weight: bold;
     width: 65%;
 }
 
@@ -144,8 +144,8 @@ body {
     text-align: center;
     font-size: 2rem;
     padding-bottom: 30px;
-    color: white;
-    opacity: 0.5;
+    color: black;
+    font-weight: bold;
 }
 
 .tasks__list {
@@ -211,7 +211,7 @@ body {
 }
 
 .tasks__title--done {
-    padding-bottom: 10px;
+    padding-bottom: 20px;
     width: 100%;
 }
 
@@ -295,4 +295,12 @@ body {
   }
   .circle-5{
     animation-delay: 0.5s;
+  }
+
+  .finished {
+      color: lightgreen;
+  }
+
+  .unfinished {
+      color: darkred;
   }

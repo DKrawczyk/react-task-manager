@@ -168,7 +168,7 @@ class TasksManager extends React.Component {
                         <h3 className="singleTask__title">{task.title}</h3>
                         <ul className="singleTask__description">
                             <li className="singleTask__info singleTask__timer">Total time: {task.time} seconds</li>
-                            <li className="singleTask__info singleTask__status">{this.taskStatus(task.isDone)}</li>
+                            <li className={task.isDone === true ? 'singleTask__info singleTask__status finished' : 'singleTask__info singleTask__status unfinished'}>{this.taskStatus(task.isDone)}</li>
                         </ul>
                         <footer className = "singleTask__footer">
                             <button onClick = {() => this.startTask(task.id)} className = "button singleTask__button--start" disabled={this.handleButtonUndoneTask(task)}>start</button>
