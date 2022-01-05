@@ -308,7 +308,7 @@ class TasksManager extends React.Component {
                 return (
                     <li className="tasks__item--done">
                         <header className="item__title--done">{task.title}</header>
-                        <footer className="item__footer--done">Total time: {task.time}</footer>
+                        <footer className="item__footer--done">Total time: {task.time} seconds</footer>
                     </li>
                 )
             }

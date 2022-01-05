@@ -1,7 +1,7 @@
 {
   "data": [
     {
-      "title": "Mycie naczyń",
+      "title": "Wash the dishes",
       "isRunning": false,
       "isDone": true,
       "isRemoved": true,
@@ -9,7 +9,7 @@
       "time": 462
     },
     {
-      "title": "Odrobienie zadań",
+      "title": "Make the homework",
       "time": 503,
       "isRunning": false,
       "isDone": true,
@@ -17,15 +17,15 @@
       "id": 2
     },
     {
-      "title": "Odkurzanie",
-      "time": 432,
+      "title": "Training",
+      "time": 436,
       "isRunning": false,
       "isDone": false,
       "isRemoved": false,
       "id": 3
     },
     {
-      "title": "Podłogi",
+      "title": "Vacuuming",
       "time": 2,
       "isRunning": false,
       "isDone": false,
@@ -33,7 +33,7 @@
       "id": 4
     },
     {
-      "title": "Zrobić projekt",
+      "title": "Make the project",
       "time": 3,
       "isRunning": false,
       "isDone": true,
