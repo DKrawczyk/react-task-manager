@@ -1,5 +1,9 @@
 # OUT OF ORDERD FOR NOW
 
+# REACT Task Manager 
+
+![Task Manager UI](https://github.com/DKrawczyk/react-task-manager/blob/main/assets/preview.png?raw=true)
+
 
 ### JSON Server – przypomnienie
 
