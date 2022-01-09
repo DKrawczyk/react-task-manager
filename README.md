@@ -143,6 +143,10 @@ Na następny raz
 5. Kolorystyka może być ustalona według szablonu
 6. Czas mógłby być obliczany w formacie dd--hh--min--sec
 
+# REACT Task Manager 
+
+![Task Manager UI](https://github.com/DKrawczyk/react-task-manager/blob/main/assets/preview.png?raw=true)
+
 
 ### JSON Server – przypomnienie
 
