@@ -228,7 +228,7 @@ class TasksManager extends React.Component {
         this.id = setInterval( () => {
                 this.handleCurrentTask(id, 1, true);
             },1000
-        )}
+    )}
 
     stopTimer(id) {
         clearInterval(this.id);

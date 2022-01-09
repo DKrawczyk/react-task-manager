@@ -3,19 +3,19 @@ html {
     font-size: 16px;
   }
   
-  *, *:before, *:after {
+*, *:before, *:after {
     box-sizing: inherit;
-  }
+}
   
-  body, h1, h2, h3, h4, h5, h6, p, ol, ul {
+body, h1, h2, h3, h4, h5, h6, p, ol, ul {
     margin: 0;
     padding: 0;
     font-weight: normal;
-  }
+}
   
-  ol, ul {
+ol, ul {
     list-style: none;
-  }
+}
 
 body {
     background: linear-gradient(45deg, rgba(19,54,133,1) 0%, rgba(141,166,222,1) 28%, rgba(141,166,222,1) 64%, rgba(19,54,133,1) 100%);
