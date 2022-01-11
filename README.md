@@ -1,10 +1,40 @@
 # OUT OF ORDERD FOR NOW - README W BUDOWIE
 
-Projekt ma na celu przećwiczenie podstawowej wiedzy z użycia React, a także interwałów i metod tablicowych. Projekt ten nie jest responsywny, ani stylowany za pomocą projektu, ani palet kolorystycznych
+Thanks for viewing my first React project! I wanted to improve my skill from basic knowledge about React. Task Manager allows you to insert a new task to do. When you start them, the application will be counted time which you spend to finish your task. Let's start the installation!
 
-Istalacja
+# Installation 
+
+This project is based on React library. Also, Task Manager uses node and npm. 
+If you don't have JSON-server, first you should install it by:
+
+        npm install -g JSON-server@0.17
+
+After this, you can check your JSON-server version by entering the command below:
+
+        json-server -v
+
+Now, let's install all dependencies. Move to the app main workspace and run:
+
+        npm i
+
+To start your workspace, you should use:
+
+        npm start
+
+If your workspace is already running, you can start your local JSON-server:
+
+        json-server --watch ./db/data.json --port 3005
+
+Your API is ready at this address:
+
+        http://localhost:3005/data
+
+We set port 3005, to be sure that nothing will block it.
+
+Enjoy!
 
 
+# Technologies
 
 Technologie
 
@@ -143,54 +173,4 @@ Na następny raz
 5. Kolorystyka może być ustalona według szablonu
 6. Czas mógłby być obliczany w formacie dd--hh--min--sec
 
-# REACT Task Manager 
-
-![Task Manager UI](https://github.com/DKrawczyk/react-task-manager/blob/main/assets/preview.png?raw=true)
-
-
-### JSON Server – przypomnienie
-
-Paczka `json-server` powinna być zainstalowana globalnie, dlatego warto mieć uprawnienia administratora (sudo na Linuksie), aby móc to zrobić.
-
-W terminalu wpisz komendę:
-
-```
-npm install -g json-server@0.17
-```
-
-Po instalacji powinieneś mieć dostęp do informacji o zainstalowanej wersji:
-
-```
-json-server -v
-```
-
-Teraz w katalogu głównym naszej aplikacji utwórz katalog `db`, a w nim plik `data.json` i wrzuć do niego testowe dane, np.:
-
-```javascript
-{
-    "data": [
-        {
-            "id": 1,
-            "firstName": "Jan",
-            "lastName": "Kowalski"
-        }
-    ]
-}
-```
-
-Jeśli masz już uruchomionego webpacka (`npm start`), to w kolejnym terminalu (wierszu poleceń) uruchom API:
-
-```
-json-server --watch ./db/data.json --port 3005
-```
-
-Ustawiamy inny port niż domyślny (3000), aby być pewnym, że nic go nie blokuje.
-
-Od teraz możesz korzystać z API pod adresem:
-
-```
-http://localhost:3005/data
-```
-
-> **Uwaga!** Jeśli API ma działać, json-server zawsze musi być uruchomiony. 
-
+#
