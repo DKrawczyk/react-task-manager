@@ -1,15 +1,18 @@
-# OUT OF ORDERD FOR NOW - README W BUDOWIE
+# REACT Task Manager Project
 
-Thanks for viewing my first React project! I wanted to improve my skill from basic knowledge about React. Task Manager allows you to insert a new task to do. When you start them, the application will be counted time which you spend to finish your task. Let's start the installation!
+![Task Manager UI](https://github.com/DKrawczyk/react-task-manager/blob/main/assets/preview.png?raw=true)
+
+
+Thanks for viewing my first React project! I wanted to improve my skills from basic knowledge about React. Task Manager allows you to insert new tasks to do. When you start them, the application will be counted time which you spend to finish your task. Let's start the installation!
 
 # Installation 
 
-This project is based on React library. Also, Task Manager uses node and npm. 
-If you don't have JSON-server, first you should install it by:
+This project is based on React library. Also, Task Manager uses [node](https://nodejs.org/en/) and [npm](https://www.npmjs.com/).
+If you don't have **JSON-server**, first you should install it by:
 
         npm install -g JSON-server@0.17
 
-After this, you can check your JSON-server version by entering the command below:
+After this, you can check your **JSON-server** version by entering the command below:
 
         json-server -v
 
@@ -21,28 +24,29 @@ To start your workspace, you should use:
 
         npm start
 
-If your workspace is already running, you can start your local JSON-server:
+If your workspace is already running, you can start your local **JSON-server**:
 
         json-server --watch ./db/data.json --port 3005
 
-Your API is ready at this address:
+Your **API** is ready at this address:
 
         http://localhost:3005/data
 
-We set port 3005, to be sure that nothing will block it.
+We set **port 3005**, to be sure that nothing will block it.
 
 Enjoy!
 
+
 # Technologies and solutions
 
-1 Webpack uses two facility functions to make work easier for developers:
+- Webpack uses two facility functions to make work easier for developers:
 
         target: "web", 
         devtool: 'inline-source-map',
         
 You can comment these lines in the file, to make the application a little bit faster.
 
-2. Styling is made by the main.css file. To make this possible, I installed the neccessary package and made rules like this:
+- Styling is made by the **main.css** file. To make this possible, I installed the neccessary package and made rules like this:
 
         module: {
         rules: [
@@ -61,7 +65,7 @@ You can comment these lines in the file, to make the application a little bit fa
         ]
     },
 
-3. When it comes to CSS I used basic reset:
+- When it comes to **CSS** I used basic reset:
 
             html {
                 box-sizing: border-box;
@@ -82,13 +86,10 @@ You can comment these lines in the file, to make the application a little bit fa
                 list-style: none;
             }
             
-4. To start this project we installed JSON-server. Because of this, Task Manager is using local API.
-
-5. To connect with API we are using FETCH. It allows us to download, upload, update and delete tasks. Most people know it as CRUD.
-
-6. Our API is in a separate file to make it more readable.
-
-7. After clicking on the start task, we must wait 1 second. To make it more enjoyable I decided to make a simply, but effective loader:
+- To start this project we installed **JSON-serve**r. Because of this, Task Manager is using local **API**.
+- To connect with **API** we are using **FETCH**. It allows us to download, upload, update and delete tasks. Most people know it as **CRUD**.
+- Our **API** is in a separate file to make it more readable.
+- After clicking on the start task, we must wait 1 second. To make it more enjoyable I decided to make a simply, but effective loader:
 
         state: {
             ...
@@ -119,11 +120,12 @@ You can comment these lines in the file, to make the application a little bit fa
         }
     }
     
-It is based on animations in CSS and DRY rules. We are using multiple time our function to don't repeat ourselfes :).
+It is based on animations in **CSS** and **DRY** rules. We are using multiple time our function to don't repeat ourselfes :).
 
-8. We are using handy and useful array methods, like:
 
-## FILTER:
+- We are using handy and useful **array methods**, like:
+
+### FILTER:
 
             const taskArray = this.findCurrentTask();
             ...
@@ -135,7 +137,7 @@ It is based on animations in CSS and DRY rules. We are using multiple time our f
                 return singleArrayTask;
             }
 
-## SORT:
+### SORT:
 
             sortTasks(array) {
                 array.sort((a, b) => {
@@ -144,7 +146,7 @@ It is based on animations in CSS and DRY rules. We are using multiple time our f
                 return array;
             }
             
-9. One of the problems was with the button. How to block them? This is my solution:
+- One of the problems was with the buttons. How to block them? This is my solution:
 
          <button onClick = {() => disabled={this.handleButtonUndoneTask(task)}>start</button>
          <button onClick = {() => disabled={this.handleButtonUndoneTask(task)}>done</button>
@@ -164,7 +166,7 @@ It is based on animations in CSS and DRY rules. We are using multiple time our f
              return (task.isDone === true) ? false : true;
          }
 
-10. It should be mentioned, that because of this project I learned how to use intervals and how to control them:
+- It should be mentioned, that because of this project I learned how to use intervals and how to control them:
 
             startTask(id) {
                 const {loading} = this.state;
@@ -185,8 +187,9 @@ It is based on animations in CSS and DRY rules. We are using multiple time our f
 
 # Conclusions for future:
 
-1. The easiest way to make reset.css is to import it into a separate file.
-2. Task Manager should be divided into more components and values should be transferred by props. For example:
+1. The easiest way to make **reset.css** is to import it into a separate file.
+ 
+2. Task Manager should be divided into more components and values should be transferred by **props**. For example:
 
                            <TaskPanel /> ->     <TaskPanelForm />
                                          ->     <TaskPanelCurrentTask />
@@ -196,14 +199,17 @@ It is based on animations in CSS and DRY rules. We are using multiple time our f
                                          ->     <TasksListDone />
                 Etc.
                 
-3. We should use hooks, and styling compliant with React styling standards not by single CSS file.
-4. This project could be compatible with the RWD design.
-5. Before starting, next time I will think over colors in my project, using Paletton for example.
+                
+3. We should use **hooks**, and styling compliant with React styling standards not by single CSS file.
+ 
+4. This project could be compatible with the **RWD** design.
+ 
+5. Before starting, next time I will think over colors in my project, using [Paletton](https://paletton.com/#uid=1000u0kllllaFw0g0qFqFg0w0aF) or [Color Hunt](https://colorhunt.co/) for example.
+ 
 6. Our time could be counted in this format:
         
         dd--hh--min--sec
         
 
-# Special thanks!
-
-Special thanks to my Mentor - devmentor.pl for providing me with the task and code review.
+# 🙏 Special thanks
+Special thanks to my [Mentor - devmentor.pl](https://devmentor.pl/) for providing me with the task and code review.
