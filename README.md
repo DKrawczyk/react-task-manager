@@ -3,7 +3,7 @@
 ![Task Manager UI](https://github.com/DKrawczyk/react-task-manager/blob/main/assets/preview.png?raw=true)
 
 
-Thanks for viewing my first React project! I wanted to improve my skills from basic knowledge about React. Task Manager allows you to insert new tasks to do. When you start them, the application will be counted time which you spend to finish your task. Let's start the installation!
+Thanks for viewing my first **React** project! I wanted to improve my skills from basic knowledge about React. Task Manager allows you to insert new tasks to do. When you start them, the application will be counted time which you spend to finish your task. Let's start the installation!
 
 # Installation 
 
