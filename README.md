@@ -7,7 +7,7 @@ Thanks for viewing my first **React** project! I wanted to improve my skills fro
 
 # Installation 
 
-This project is based on React library. Also, Task Manager uses [node](https://nodejs.org/en/) and [npm](https://www.npmjs.com/).
+This project is based on *React* library. Also, Task Manager uses [node](https://nodejs.org/en/) and [npm](https://www.npmjs.com/).
 If you don't have **JSON-server**, first you should install it by:
 
         npm install -g JSON-server@0.17
